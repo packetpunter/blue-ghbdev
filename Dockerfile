@@ -1,6 +1,12 @@
-FROM blue-centos-base:latest
-RUN yum -y install gcc make gcc-c++ bzip2
-RUN wget -O ruby-install-0.7.0.tar.gz https://github.com/postmodern/ruby-install/archive/v0.7.0.tar.gz; tar -xzvf ruby-install-0.7.0.tar.gz; cd ruby-install-0.7.0/; make install
-RUN ruby-install ruby
-RUN gem install github-pages
-ENV workdir /app/code
+FROM ubuntu:latest
+RUN apt-get -y update; apt-get -y upgrade; apt-get -y install git ruby-full ruby-dev build-essential
+RUN gem install jekyll bundler
+RUN mkdir -p /app
+RUN apt-get -y install libxml2 zlibc zlib1g-dev zlib1g
+RUN gem install github-pages bundler
+ENV workdir /app
+WORKDIR ${workdir}
+RUN git clone https://github.com/packetpunter/packetpunter.github.io /app
+COPY ./Gemfile /app
+RUN ["bundle","install"]
+ENTRYPOINT [ "bundle","exec","jekyll", "serve", "--host=0.0.0.0" ]

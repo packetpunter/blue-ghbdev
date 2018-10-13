@@ -1,0 +1,1 @@
+docker run -t --rm -p 4000:4000 --mount type=bind,source=$(PWD),target=/app blue-ghb
