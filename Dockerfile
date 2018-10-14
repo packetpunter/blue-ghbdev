@@ -6,7 +6,6 @@ RUN apt-get -y install libxml2 zlibc zlib1g-dev zlib1g
 RUN gem install github-pages bundler
 ENV workdir /app
 WORKDIR ${workdir}
-RUN git clone https://github.com/packetpunter/packetpunter.github.io /app
 COPY ./Gemfile /app
 RUN ["bundle","install"]
 ENTRYPOINT [ "bundle","exec","jekyll", "serve", "--host=0.0.0.0" ]
